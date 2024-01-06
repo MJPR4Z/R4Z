@@ -1,0 +1,328 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll For Zombie</title>
+    <style>
+       body {
+                background-color: black;
+                color: red;
+                font-family: 'Creepster', cursive;
+                text-align: center;
+                margin: 50px;
+            }
+    
+            select {
+                padding: 10px;
+                font-size: 16px;
+                margin-right: 5px;
+            }
+    
+            h1 {
+                text-shadow: 2px 2px 4px #000000;
+            }
+    
+            #randomGame, #randomMap, #randomChallenge {
+                font-size: 20px;
+                margin-top: 20px;
+            }
+    
+            button {
+                background-color: darkred;
+                color: white;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                margin-top: 20px;
+                transition: background-color 0.3s, transform 0.3s;
+                animation: bounce 1s infinite;
+            }
+    
+            button:hover {
+                background-color: firebrick;
+                transform: scale(1.1);
+                animation: none;
+            }
+    
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-20px);
+                }
+                60% {
+                    transform: translateY(-10px);
+                }
+            }
+        </style>
+</head>
+<body>
+    <h1>Roll For Zombie</h1>
+
+    <label>Select the games you have:</label><br>
+
+    <input type="checkbox" id="gameWorldAtWar" value="World at War" checked>
+    <label for="gameWorldAtWar">World at War</label>
+
+    <input type="checkbox" id="gameBlackOps" value="Black Ops" checked>
+    <label for="gameBlackOps">Black Ops</label>
+
+    <input type="checkbox" id="gameBlackOpsII" value="Black Ops II" checked>
+    <label for="gameBlackOpsII">Black Ops II</label>
+
+    <input type="checkbox" id="gameBlackOpsIII" value="Black Ops III" checked>
+    <label for="gameBlackOpsIII">Black Ops III</label>
+
+    <input type="checkbox" id="gameBlackOps4" value="Black Ops 4" checked>
+    <label for="gameBlackOps4">Black Ops 4</label>
+
+    <input type="checkbox" id="gameColdWar" value="Black Ops Cold War" checked>
+    <label for="gameColdWar">Black Ops Cold War</label> <br>
+
+    <input type="checkbox" id="gameVanguard" value="Vanguard" checked>
+    <label for="gameVanguard">Vanguard</label>
+
+    <input type="checkbox" id="gameAdvancedWarfare" value="Advanced Warfare" checked>
+    <label for="gameAdvancedWarfare">Advanced Warfare</label>
+
+    <input type="checkbox" id="gameWWII" value="WWII" checked>
+    <label for="gameWWII">WWII</label>
+
+    <input type="checkbox" id="gameModernWarfare" value="Modern Warfare 3" checked>
+    <label for="ModernWarfare">Modern Warfare 3</label>
+
+    <input type="checkbox" id="gameInfiniteWarfare" value="Infinite Warfare" checked>
+    <label for="game Infinite Warfare">Infinite Warfare</label><br><br>
+
+    <p id="randomGame"></p>
+    <p id="randomMap"></p>
+    <p id="randomChallenge"></p>
+    <button onclick="rollGameAndMap()">Roll for Game, Map & Challenge</button>
+    <button onclick="rerollChallenge()">Reroll Challenge</button>
+
+    <script>
+        // Arrays of COD Zombies games, maps, and challenges
+        var zombiesGames = [
+            'World at War',
+            'Black Ops',
+            'Black Ops II',
+            'Black Ops III',
+            'Black Ops 4',
+            'Black Ops Cold War',
+            'Vanguard',
+            'Advanced Warfare',
+            'WWII',
+            'Modern Warfare 3',
+            'Infinite Warfare'
+        ];
+
+        var zombiesMaps = {
+            'World at War': [
+                'Nacht der Untoten',
+                'Verrückt',
+                'Shi No Numa',
+                'Der Riese'
+            ],
+            'Black Ops': [
+                'Kino der Toten',
+                'Five',
+                'Ascension',
+                'Call of the Dead',
+                'Shangri-La',
+                'Moon'
+            ],
+            'Black Ops II': [
+                'TranZit',
+                'Die Rise',
+                'Mob of the Dead',
+                'Buried',
+                'Bus Depot',
+                'Farm',
+                'Town',
+                'Nuketown',
+                'Origins'
+            ],
+            'Black Ops III': [
+                'Shadows of Evil',
+                'Der Eisendrache',
+                'Zetsubou No Shima',
+                'Gorod Krovi',
+                'Revelations',
+                'Nacht der Untoten',
+                'Verrückt',
+                'Shi No Numa',
+                'The Giant',
+                'Moon',
+                'Shangri La',
+                'Origins'
+            ],
+            'Black Ops 4': [
+                'IX',
+                'Voyage of Despair',
+                'Blood of the Dead',
+                'Classified',
+                'Dead of the Night',
+                'Ancient Evil',
+                'Alpha Omega',
+                'Tag Der Toten'
+            ],
+            'Black Ops Cold War': [
+                'Die Maschine',
+                'Firebase Z',
+                'Mauer der Toten',
+                'Forsaken'
+            ],
+            'Vanguard' : [
+                'Shi No Numa',
+                'Der Angfang',
+                'The Archon',
+                'Terra Maledicta'
+            ],
+            'WWII' : [
+                'The Final Reich',
+                'Grosten Haus',
+                'The Tortured Path',
+                'The Darkest Shore',
+                'The Frozen Dawn',
+                'The Shadowed Throne',
+                'USS Mount Olympus',
+                'Bodega Cervantes'
+            ],
+            'Advanced Warfare' : [
+                'Outbreak',
+                'Infection',
+                'Descent',
+                'Carrier'
+            ],
+            'Infinite Warfare' : [
+                'Zombies in Spaceland',
+                'Rave in the Redwoods',
+                'Shaolin Shuffle',
+                'Attack of the Radioactive Thing',
+                'The Beast from Beyond'
+            ],
+            'Modern Warfare 3' : [
+                'MWZ'
+            ]
+        };
+
+        var challenges = [
+            'Round 50',
+            'Two Box Challenge',
+            'No Perks',
+            'Starting Room Weapons Only',
+            'PaP every Gun',
+            'Spawn Room Only',
+            'Buy Every Door Speedrun',
+            'Every Buildable',
+            'Wall Guns Only',
+            'No PaP'
+        ];
+
+        // Function to generate a random game based on selected checkboxes
+        function getRandomGame() {
+            var selectedGames = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(function (checkbox) {
+                return checkbox.value;
+            });
+
+            if (selectedGames.length === 0) {
+                alert('Please select at least one game.');
+                return null;
+            }
+
+            var randomIndex = Math.floor(Math.random() * selectedGames.length);
+            return selectedGames[randomIndex];
+        }
+
+        // Function to generate a random map based on the selected game
+        function getRandomMap(game) {
+            var maps = zombiesMaps[game];
+            var randomIndex = Math.floor(Math.random() * maps.length);
+            return maps[randomIndex];
+        }
+
+        // Function to generate a random challenge
+        function getRandomChallenge() {
+            var randomIndex = Math.floor(Math.random() * challenges.length);
+            return challenges[randomIndex];
+        }
+
+        // Display random game, map, and challenge on the page
+        function displayRandomGameAndMapAndChallenge() {
+            var randomGame = getRandomGame();
+
+            if (randomGame !== null) {
+                var randomMap = getRandomMap(randomGame);
+                var randomChallenge = getRandomChallenge();
+
+                document.getElementById("randomGame").textContent = "Game: " + randomGame;
+                document.getElementById("randomMap").textContent = "Map: " + randomMap;
+                document.getElementById("randomChallenge").textContent = "Challenge: " + randomChallenge;
+            }
+        }
+
+        // Function to roll for a new game, map, and challenge
+        function rollGameAndMap() {
+            displayRandomGameAndMapAndChallenge();
+        }
+
+        // Function to reroll only the challenge
+        function rerollChallenge() {
+            var randomChallenge = getRandomChallenge();
+            document.getElementById("randomChallenge").textContent = "Challenge: " + randomChallenge;
+        }
+       
+
+        // Initial display
+        displayRandomGameAndMapAndChallenge();
+    </script>
+</body>
+</html>
